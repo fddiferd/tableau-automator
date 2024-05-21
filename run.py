@@ -1,5 +1,5 @@
 from functions_dashboard import get_dashboard_roots, update_dashboard_size, format_filters,create_header
-from functions_worksheet import get_worksheet_roots
+from functions_worksheet import get_worksheet_roots, format_worksheet_title
 from functions_general import get_xml_tree, save_and_open, add_styles
 
 
@@ -9,7 +9,7 @@ root = tree.getroot()
 dashboard_roots = get_dashboard_roots(root)
 for dashbord_root in dashboard_roots:
     update_dashboard_size(dashboard_root=dashbord_root, width=1700, height=1000)
-    format_filters(dashboard_root=dashbord_root)
+    format_filters(dashboard_root=dashbord_root, orientation='vert')
     create_header(dashbord_root)
     add_styles(dashbord_root, 'parameter-ctrl-title')
 
@@ -17,7 +17,7 @@ worksheet_roots = get_worksheet_roots(root)
 for worksheet_root in worksheet_roots:
     add_styles(worksheet_root.find('table'), 'legend-title')
     add_styles(worksheet_root.find('table'), 'quick-filter-title')
-
+    format_worksheet_title(worksheet_root)
 
 save_and_open(tree)
 

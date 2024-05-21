@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 from info import logo_file_path
-from elements import get_container
+from elements import container
 
 def get_dashboard_roots(root):
     return [dashboard for dashboard in root.iter('dashboard')]
@@ -127,10 +127,10 @@ def add_to_zones(dashboard_root: ET.Element, new_zone: ET.Element, placement='la
         zones.append(new_zone)
 
 
-def format_filters(dashboard_root: ET.Element, orientation: str):
+def format_filters(dashboard_root: ET.Element):
     zones_element = dashboard_root.find('zones')
 
-    filter_container = get_container(type=orientation)
+    filter_container = container
     non_sheet_elements = []
 
     # Collect non-sheet elements and their parents
@@ -162,3 +162,18 @@ def format_filters(dashboard_root: ET.Element, orientation: str):
     zones_element.append(filter_container)
 
 
+def add_dashboard_styles(dashboard_root: ET.Element):
+
+    def add_style_to(style_root, element):
+        style_rule = ET.SubElement(style_root, 'style-rule', {'element': element})
+        ET.SubElement(style_rule, 'format', {'attr': 'color', 'value': '#56a9ac'})
+        ET.SubElement(style_rule, 'format', {'attr': 'font-weight', 'value': 'bold'})
+        ET.SubElement(style_rule, 'format', {'attr': 'font-size', 'value': '12'})
+        ET.SubElement(style_rule, 'format', {'attr': 'text-align', 'value': 'center'})
+
+    style_root = dashboard_root.find('style')
+    if style_root is not None:
+        add_style_to(style_root, 'parameter-ctrl-title')
+        # add_style_to(style_root, 'egend-title')
+        # add_style_to(style_root, 'quick-filter-title')
+        
