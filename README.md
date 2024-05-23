@@ -29,3 +29,5 @@ Execute the `run.py` file using the following command:
 ### Step 6: Select and Format the Tableau File
 
 A Python application window will pop up. Select the desired Tableau file to format. The script will run and a new dashboard will open. The new file will be saved as `"Original Name - New.twb"`.
+
+![Alt Text](instructions.gif)
