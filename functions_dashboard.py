@@ -143,17 +143,20 @@ def get_formatted_filters(dashboard_root: ET.Element, orientation: str):
             # Remove item
             zones_element.remove(zone)
 
-            # Get calc type
-            param_name = zone.get('param')
-            calc_type = param_name.split('.')[-1].split(':')[0].replace('[', '')
-            
-            # Format -> multi-select, apply-button, relevant-values
-            if calc_type == 'none':
-                zone.set('mode', 'checkdropdown')
-                zone.set('show-apply', 'true')
-                zone.set('values', 'relevant')
+            try: 
+                # Get calc type
+                param_name = zone.get('param')
+                calc_type = param_name.split('.')[-1].split(':')[0].replace('[', '')
+                
+                # Format -> multi-select, apply-button, relevant-values
+                if calc_type == 'none':
+                    zone.set('mode', 'checkdropdown')
+                    zone.set('show-apply', 'true')
+                    zone.set('values', 'relevant')
 
-            non_sheet_elements.append(zone)
+                non_sheet_elements.append(zone)
+            except:
+                continue
 
     # Sort non-sheet elements by 'param' attribute in ascending order
     non_sheet_elements = sorted(non_sheet_elements, key=lambda x: x.attrib.get('param', ''))
