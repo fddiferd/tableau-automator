@@ -24,7 +24,7 @@ def get_highest_zone_id(dashboard_root: ET.Element) -> int:
     return highest_id
 
 
-def create_header(dashboard_root: ET.Element):
+def create_dashboard(dashboard_root: ET.Element, filter_orientation: str):
 
     starting_id = get_highest_zone_id(dashboard_root=dashboard_root)
 
@@ -96,6 +96,10 @@ def create_header(dashboard_root: ET.Element):
     })
     run.text = '<Sheet Name>'
 
+    # Add filters
+    filter_container = get_formatted_filters(dashboard_root, filter_orientation)
+    inner_zone_1.append(filter_container)
+
     inner_zone_4_style = ET.SubElement(inner_zone_4, 'zone-style')
     ET.SubElement(inner_zone_4_style, 'format', {'attr': 'border-color', 'value': '#000000'})
     ET.SubElement(inner_zone_4_style, 'format', {'attr': 'border-style', 'value': 'none'})
@@ -127,10 +131,10 @@ def add_to_zones(dashboard_root: ET.Element, new_zone: ET.Element, placement='la
         zones.append(new_zone)
 
 
-def format_filters(dashboard_root: ET.Element, orientation: str):
+def get_formatted_filters(dashboard_root: ET.Element, orientation: str):
     zones_element = dashboard_root.find('zones')
 
-    filter_container = get_container(type=orientation)
+    filter_container = get_container(type=orientation, fixed_size=200 if orientation == 'vert' else None)
     non_sheet_elements = []
 
     # Collect non-sheet elements and their parents
@@ -158,7 +162,9 @@ def format_filters(dashboard_root: ET.Element, orientation: str):
     for zone in non_sheet_elements:
         filter_container.append(zone)
 
-    # Append the filter container to the zones element
-    zones_element.append(filter_container)
-
-
+    if orientation == 'vert':
+        outter_container = get_container(type= 'vert' if orientation == 'horz' else 'horz')
+        outter_container.append(filter_container)
+        return outter_container
+    else:
+        return filter_container

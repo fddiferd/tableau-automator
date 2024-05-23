@@ -1,9 +1,8 @@
 import xml.etree.ElementTree as ET
-from info import file_path
 import subprocess
 
 
-def get_xml_tree():
+def get_xml_tree(file_path):
     return ET.parse(file_path)
 
 
@@ -23,13 +22,13 @@ def add_styles(dashboard_root: ET.Element, element: str):
         # add_style_to(style_root, 'quick-filter-title')
         
 
-def get_new_file_path() -> str:
+def get_new_file_path(file_path) -> str:
     base_name, extension = file_path.rsplit('.', 1)
     new_file_path = f"{base_name} - New.{extension}"
     return new_file_path
 
 
-def save_and_open(tree):
-    new_file_path = get_new_file_path()
+def save_and_open(tree, file_path):
+    new_file_path = get_new_file_path(file_path)
     tree.write(new_file_path)
     subprocess.run(['open', new_file_path])
